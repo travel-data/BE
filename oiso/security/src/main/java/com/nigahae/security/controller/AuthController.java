@@ -2,6 +2,7 @@ package com.nigahae.security.controller;
 
 import com.nigahae.common.constant.ErrorCode;
 import com.nigahae.common.exception.CustomException;
+import com.nigahae.security.jwt.AuthenticatedUser;
 import com.nigahae.security.jwt.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static com.nigahae.common.constant.CommonConstant.*;
@@ -20,6 +22,9 @@ import static com.nigahae.security.util.CookieUtil.getCookie;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
+    public record MeResponse(String email, String nickname) {
+    }
 
     @Value("${JWT_ACCESS_TOKEN_VALIDITY_SEC}")
     private int jwtAccessTokenValiditySec;
@@ -44,15 +49,20 @@ public class AuthController {
 
         String newAccessToken = jwtTokenProvider.createAccessToken(email, nickname);
 
-        addCookie(response, ACCESS_TOKEN, newAccessToken, jwtAccessTokenValiditySec, false);
+        addCookie(response, ACCESS_TOKEN, newAccessToken, jwtAccessTokenValiditySec, true);
 
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/me")
+    public MeResponse me(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        return new MeResponse(authenticatedUser.email(), authenticatedUser.nickname());
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        addCookie(response, ACCESS_TOKEN, EMPTY_VALUE, jwtCookieDeleteValiditySec, false);
-        addCookie(response, REFRESH_TOKEN, EMPTY_VALUE, jwtCookieDeleteValiditySec, false);
+        addCookie(response, ACCESS_TOKEN, EMPTY_VALUE, jwtCookieDeleteValiditySec, true);
+        addCookie(response, REFRESH_TOKEN, EMPTY_VALUE, jwtCookieDeleteValiditySec, true);
 
         return ResponseEntity.ok().body(SUCCESS_LOGOUT_MESSAGE);
     }

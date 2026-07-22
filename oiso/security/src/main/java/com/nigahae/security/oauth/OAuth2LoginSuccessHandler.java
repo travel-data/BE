@@ -23,7 +23,7 @@ import static com.nigahae.common.constant.CommonConstant.*;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Value("${OAUTH2_REDIRECT_URI}")
+    @Value("${app.oauth2.redirect-uri}")
     private String redirectUri;
 
     @Value("${JWT_ACCESS_TOKEN_VALIDITY_SEC}")

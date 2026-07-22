@@ -3,6 +3,10 @@ package com.nigahae.security.util;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+
+import java.time.Duration;
 import java.util.Optional;
 
 
@@ -16,13 +20,15 @@ public class CookieUtil {
      * 쿠키 생성 및 Response 추가
      */
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge, boolean isHttpOnly) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(isHttpOnly);
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .secure(true)
+                .httpOnly(isHttpOnly)
+                .sameSite("None")
+                .maxAge(Duration.ofSeconds(maxAge))
+                .build();
 
-        response.addCookie(cookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
     /**
