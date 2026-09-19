@@ -1,21 +1,15 @@
 package com.nigahae.user.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nigahae.user.domain.preference.PreferredTravelTheme;
 import com.nigahae.user.domain.preference.TransportationMode;
 import com.nigahae.user.domain.preference.TravelCompanion;
 import com.nigahae.user.domain.preference.TravelTime;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
 
 @Schema(
         name = "UserPreferencesRequest",
-        description = "초기 여행 선호정보. 필수 선택값을 모두 보내며, 테마와 좌표는 null로 초기화할 수 있습니다."
+        description = "초기 여행 선호정보. 출발 장소는 코스별 장소 ID로 별도 전달합니다."
 )
 public record UserPreferencesRequest(
         @Schema(
@@ -93,33 +87,5 @@ public record UserPreferencesRequest(
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
         @NotNull(message = "이동 수단은 필수입니다.")
-        TransportationMode transportationMode,
-
-        @Schema(
-                description = "출발지 위도. 선택값이지만 경도와 반드시 함께 보내야 합니다.",
-                example = "35.8562",
-                minimum = "-90",
-                maximum = "90",
-                nullable = true
-        )
-        @DecimalMin(value = "-90.0", message = "위도는 -90 이상이어야 합니다.")
-        @DecimalMax(value = "90.0", message = "위도는 90 이하여야 합니다.")
-        BigDecimal latitude,
-
-        @Schema(
-                description = "출발지 경도. 선택값이지만 위도와 반드시 함께 보내야 합니다.",
-                example = "129.2247",
-                minimum = "-180",
-                maximum = "180",
-                nullable = true
-        )
-        @DecimalMin(value = "-180.0", message = "경도는 -180 이상이어야 합니다.")
-        @DecimalMax(value = "180.0", message = "경도는 180 이하여야 합니다.")
-        BigDecimal longitude
-) {
-    @JsonIgnore
-    @AssertTrue(message = "위도와 경도는 함께 입력해야 합니다.")
-    public boolean isCoordinatePairValid() {
-        return (latitude == null) == (longitude == null);
-    }
-}
+        TransportationMode transportationMode
+) {}

@@ -1,6 +1,8 @@
 package com.nigahae.app.recommendation;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.AssertTrue;
+import java.time.LocalDate;
 import java.util.List;
 
 public final class RecommendationDtos {
@@ -8,8 +10,17 @@ public final class RecommendationDtos {
 
     public record RecommendationRequest(
             Object travelTime, Object travelCompanion, Object preferredTravelTheme,
-            Object transportationMode, Double latitude, Double longitude,
-            Boolean withPet) {}
+            Object transportationMode, LocalDate travelStartDate,
+            List<Long> savedSpotIds, List<Long> savedNearbyPlaceIds,
+            List<Long> activeFestivalSpotIds, String departureCategory,
+            String departurePlaceId, Boolean withPet) {
+
+        @JsonIgnore
+        @AssertTrue(message = "출발 장소 유형과 ID는 함께 입력해야 합니다.")
+        public boolean isDepartureReferenceValid() {
+            return (departureCategory == null) == (departurePlaceId == null);
+        }
+    }
 
     public record RecommendationResponse(
             String concept,

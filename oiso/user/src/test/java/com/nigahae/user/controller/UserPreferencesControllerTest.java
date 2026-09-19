@@ -21,8 +21,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -52,9 +50,7 @@ class UserPreferencesControllerTest {
                 TravelTime.ONE_DAY,
                 TravelCompanion.PARTNER,
                 PreferredTravelTheme.HISTORY_CULTURE,
-                TransportationMode.WALK_PUBLIC_TRANSIT,
-                new BigDecimal("35.8562"),
-                new BigDecimal("129.2247")
+                TransportationMode.WALK_PUBLIC_TRANSIT
         );
         when(userService.updatePreferences(42L, request)).thenReturn(response);
 
@@ -66,9 +62,7 @@ class UserPreferencesControllerTest {
                                   "travelTime": "ONE_DAY",
                                   "travelCompanion": "PARTNER",
                                   "preferredTravelTheme": "HISTORY_CULTURE",
-                                  "transportationMode": "WALK_PUBLIC_TRANSIT",
-                                  "latitude": 35.8562,
-                                  "longitude": 129.2247
+                                  "transportationMode": "WALK_PUBLIC_TRANSIT"
                                 }
                                 """))
                 .andExpect(status().isOk())
@@ -76,9 +70,7 @@ class UserPreferencesControllerTest {
                 .andExpect(jsonPath("$.data.travelTime").value("ONE_DAY"))
                 .andExpect(jsonPath("$.data.travelCompanion").value("PARTNER"))
                 .andExpect(jsonPath("$.data.preferredTravelTheme").value("HISTORY_CULTURE"))
-                .andExpect(jsonPath("$.data.transportationMode").value("WALK_PUBLIC_TRANSIT"))
-                .andExpect(jsonPath("$.data.latitude").value(35.8562))
-                .andExpect(jsonPath("$.data.longitude").value(129.2247));
+                .andExpect(jsonPath("$.data.transportationMode").value("WALK_PUBLIC_TRANSIT"));
 
         verify(userService).updatePreferences(42L, request);
     }
@@ -116,9 +108,7 @@ class UserPreferencesControllerTest {
                 TravelTime.ONE_DAY,
                 TravelCompanion.PARTNER,
                 PreferredTravelTheme.HISTORY_CULTURE,
-                TransportationMode.WALK_PUBLIC_TRANSIT,
-                new BigDecimal("35.8562"),
-                new BigDecimal("129.2247")
+                TransportationMode.WALK_PUBLIC_TRANSIT
         );
     }
 
