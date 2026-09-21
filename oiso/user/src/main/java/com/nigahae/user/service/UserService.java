@@ -53,9 +53,7 @@ public class UserService implements UserAuthenticationService {
                 request.travelTime(),
                 request.travelCompanion(),
                 request.preferredTravelTheme(),
-                request.transportationMode(),
-                request.latitude(),
-                request.longitude()
+                request.transportationMode()
         );
 
         return UserPreferencesResponse.from(user);

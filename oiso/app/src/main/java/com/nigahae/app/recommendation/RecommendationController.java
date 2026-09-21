@@ -27,8 +27,8 @@ public class RecommendationController {
                       "travelCompanion": "FAMILY",
                       "preferredTravelTheme": "HISTORY_CULTURE",
                       "transportationMode": "CAR",
-                      "latitude": 35.8562,
-                      "longitude": 129.2248,
+                      "departureCategory": "PRESET",
+                      "departurePlaceId": "GYEONGJU_STATION",
                       "withPet": false
                     }
                     """))

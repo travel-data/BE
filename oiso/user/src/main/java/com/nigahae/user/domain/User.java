@@ -7,8 +7,6 @@ import com.nigahae.user.domain.preference.TravelTime;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Getter
 @Builder
@@ -57,12 +55,6 @@ public class User {
     @Column(name = "profile_image_url", length = 2048)
     private String profileImageUrl;
 
-    @Column(name = "latitude", length = 255)
-    private String latitude;
-
-    @Column(name = "longitude", length = 255)
-    private String longitude;
-
     public void updateProfile(String nickname, String email, String profileImageUrl) {
         this.nickname = nickname;
         this.email = email;
@@ -81,20 +73,12 @@ public class User {
             TravelTime travelTime,
             TravelCompanion travelCompanion,
             PreferredTravelTheme preferredTravelTheme,
-            TransportationMode transportationMode,
-            BigDecimal latitude,
-            BigDecimal longitude
+            TransportationMode transportationMode
     ) {
         this.hasTravelPlan = hasTravelPlan;
         this.travelTime = travelTime.code();
         this.travelCompanion = travelCompanion.code();
         this.preferredTravelTheme = preferredTravelTheme == null ? null : preferredTravelTheme.code();
         this.transportationMode = transportationMode.code();
-        this.latitude = coordinateToString(latitude);
-        this.longitude = coordinateToString(longitude);
-    }
-
-    private String coordinateToString(BigDecimal coordinate) {
-        return coordinate == null ? null : coordinate.stripTrailingZeros().toPlainString();
     }
 }

@@ -21,8 +21,6 @@ CREATE TABLE IF NOT EXISTS public."User"
     provider_user_id       varchar(100) NULL,
     email                  varchar(320) NULL,
     profile_image_url      varchar(2048) NULL,
-    latitude               varchar(255) NULL,
-    longitude              varchar(255) NULL,
 
     created_at             timestamptz NOT NULL DEFAULT now(),
     updated_at             timestamptz NOT NULL DEFAULT now(),

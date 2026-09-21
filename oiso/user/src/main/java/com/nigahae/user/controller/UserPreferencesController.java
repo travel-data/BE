@@ -35,8 +35,8 @@ public class UserPreferencesController {
             summary = "초기 여행 선호정보 저장",
             description = """
                     JWT 쿠키로 인증된 사용자의 선호정보 전체를 저장합니다.
-                    필수 선택값은 모두 문자열 enum으로 보내야 하며, preferredTravelTheme과 좌표는 null을 허용합니다.
-                    latitude와 longitude는 둘 다 전달하거나 둘 다 null이어야 합니다.
+                    필수 선택값은 모두 문자열 enum으로 보내야 하며, preferredTravelTheme은 null을 허용합니다.
+                    출발 장소는 사용자 선호정보에 저장하지 않고 코스 추천 요청에 장소 ID로 전달합니다.
 
                     화면 선택값 → 요청 enum 매핑:
 
@@ -61,7 +61,7 @@ public class UserPreferencesController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선호정보 저장 성공"),
-            @ApiResponse(responseCode = "400", description = "선호정보 저장 실패: 필수값, enum 또는 좌표 검증 오류"),
+            @ApiResponse(responseCode = "400", description = "선호정보 저장 실패: 필수값 또는 enum 검증 오류"),
             @ApiResponse(responseCode = "401", description = "선호정보 저장 실패: 인증되지 않은 사용자"),
             @ApiResponse(responseCode = "404", description = "선호정보 저장 실패: 사용자를 찾을 수 없음")
     })
@@ -81,9 +81,7 @@ public class UserPreferencesController {
                                                       "travelTime": "ONE_DAY",
                                                       "travelCompanion": "PARTNER",
                                                       "preferredTravelTheme": "HISTORY_CULTURE",
-                                                      "transportationMode": "WALK_PUBLIC_TRANSIT",
-                                                      "latitude": 35.8562,
-                                                      "longitude": 129.2247
+                                                      "transportationMode": "WALK_PUBLIC_TRANSIT"
                                                     }
                                                     """
                                     ),
@@ -95,9 +93,7 @@ public class UserPreferencesController {
                                                       "travelTime": "HALF_DAY",
                                                       "travelCompanion": "ALONE",
                                                       "preferredTravelTheme": null,
-                                                      "transportationMode": "CAR",
-                                                      "latitude": null,
-                                                      "longitude": null
+                                                      "transportationMode": "CAR"
                                                     }
                                                     """
                                     )

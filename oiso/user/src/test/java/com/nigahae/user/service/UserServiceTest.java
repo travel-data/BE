@@ -14,7 +14,6 @@ import com.nigahae.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,9 +55,7 @@ class UserServiceTest {
                 TravelTime.ONE_DAY,
                 TravelCompanion.PARTNER,
                 PreferredTravelTheme.HISTORY_CULTURE,
-                TransportationMode.WALK_PUBLIC_TRANSIT,
-                new BigDecimal("35.856200"),
-                new BigDecimal("129.224700")
+                TransportationMode.WALK_PUBLIC_TRANSIT
         );
         when(repository.findById(7L)).thenReturn(Optional.of(existing));
 
@@ -69,14 +66,10 @@ class UserServiceTest {
         assertThat(existing.getTravelCompanion()).isEqualTo(2L);
         assertThat(existing.getPreferredTravelTheme()).isEqualTo(1L);
         assertThat(existing.getTransportationMode()).isEqualTo(1L);
-        assertThat(existing.getLatitude()).isEqualTo("35.8562");
-        assertThat(existing.getLongitude()).isEqualTo("129.2247");
         assertThat(response.travelTime()).isEqualTo(TravelTime.ONE_DAY);
         assertThat(response.travelCompanion()).isEqualTo(TravelCompanion.PARTNER);
         assertThat(response.preferredTravelTheme()).isEqualTo(PreferredTravelTheme.HISTORY_CULTURE);
         assertThat(response.transportationMode()).isEqualTo(TransportationMode.WALK_PUBLIC_TRANSIT);
-        assertThat(response.latitude()).isEqualByComparingTo("35.8562");
-        assertThat(response.longitude()).isEqualByComparingTo("129.2247");
         verify(repository, never()).save(any());
     }
 
@@ -85,28 +78,20 @@ class UserServiceTest {
         User existing = User.builder()
                 .userId(7L)
                 .preferredTravelTheme(3L)
-                .latitude("35.1")
-                .longitude("129.1")
                 .build();
         UserPreferencesRequest request = new UserPreferencesRequest(
                 false,
                 TravelTime.HALF_DAY,
                 TravelCompanion.ALONE,
                 null,
-                TransportationMode.CAR,
-                null,
-                null
+                TransportationMode.CAR
         );
         when(repository.findById(7L)).thenReturn(Optional.of(existing));
 
         UserPreferencesResponse response = service.updatePreferences(7L, request);
 
         assertThat(existing.getPreferredTravelTheme()).isNull();
-        assertThat(existing.getLatitude()).isNull();
-        assertThat(existing.getLongitude()).isNull();
         assertThat(response.preferredTravelTheme()).isNull();
-        assertThat(response.latitude()).isNull();
-        assertThat(response.longitude()).isNull();
     }
 
     @Test
@@ -116,9 +101,7 @@ class UserServiceTest {
                 TravelTime.ONE_DAY,
                 TravelCompanion.FRIENDS,
                 null,
-                TransportationMode.BICYCLE,
-                null,
-                null
+                TransportationMode.BICYCLE
         );
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
